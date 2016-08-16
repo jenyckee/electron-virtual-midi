@@ -13,3 +13,4 @@ To run you need to rebuild the native midi.js module to make it compatible with 
 
 	npm install
 	./node_modules/.bin/electron-rebuild
+	npm run dev
