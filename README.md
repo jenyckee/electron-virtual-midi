@@ -11,5 +11,5 @@ It opens a virtual input and output port and uses electron ICP to communicate mi
 
 To run you need to rebuild the native midi.js module to make it compatible with the electron node version (6.4.4)
 
-npm install
-./node_modules/.bin/electron-rebuild
+	npm install
+	./node_modules/.bin/electron-rebuild
