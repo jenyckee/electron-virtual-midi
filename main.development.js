@@ -1,4 +1,5 @@
-import { app, BrowserWindow, Menu, shell } from 'electron';
+import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
+import midi from 'midi'
 
 let menu;
 let template;
@@ -37,9 +38,27 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728
+    width: 500,
+    height: 500
   });
+
+  let midiOut = new midi.output(),
+      midiIn = new midi.input(),
+      name = 'virtual midi'
+
+  try {
+    midiIn.openVirtualPort(name),
+    midiOut.openVirtualPort(name)
+  } catch(err) {
+    console.error(err)
+  }
+
+  midiIn.on('message', (deltaTime, message) => {
+    mainWindow.webContents.send('midi', message)
+  })
+  ipcMain.on('message', (event, arg) => {
+    midiOut.sendMessage(arg)
+  })
 
   mainWindow.loadURL(`file://${__dirname}/app/app.html`);
 

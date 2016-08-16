@@ -7,9 +7,12 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import config from './webpack.config.development';
 
+// import virtualMidi from './virtual-midi';
+
 const app = express();
+// const midi = virtualMidi(app, 'virtual conductor');
 const compiler = webpack(config);
-const PORT = 3000;
+const PORT = 8000;
 
 const wdm = webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
@@ -17,6 +20,7 @@ const wdm = webpackDevMiddleware(compiler, {
     colors: true
   }
 });
+
 
 app.use(wdm);
 
