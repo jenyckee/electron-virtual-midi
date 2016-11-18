@@ -27,7 +27,6 @@ export function open() {
 }
 
 export function midiMessage (message) {
-  console.log('midi message :', message)
   return (dispatch, getState) => {
     return new Promise((resolve) => {
       dispatch(emitRTC(message))

@@ -1,7 +1,5 @@
 .container {
-  position: absolute;
-  left: 10px;
-  text-align: center;
+  padding: 10px;
 }
 
 .container h2 {

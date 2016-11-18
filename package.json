@@ -103,6 +103,7 @@
     "peerjs": "^0.3.14",
     "postcss": "^5.1.0",
     "react": "^15.3.0",
+    "react-ace": "^3.5.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.0",

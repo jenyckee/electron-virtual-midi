@@ -38,8 +38,8 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 500,
-    height: 500
+    width: 800,
+    height: 650
   });
 
   let midiOut = new midi.output(),
@@ -47,6 +47,7 @@ app.on('ready', async () => {
       name = 'virtual midi'
 
   try {
+    midiIn.ignoreTypes(false, false, false)
     midiIn.openVirtualPort(name),
     midiOut.openVirtualPort(name)
   } catch(err) {

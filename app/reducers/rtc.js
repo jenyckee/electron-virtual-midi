@@ -14,7 +14,7 @@ export const EMIT       = 'EMIT'
 export const INIT       = 'INIT'
 export const DATA       = 'DATA'
 export const ERROR      = 'ERROR'
-
+export const CODE_CHANGE = 'CODE_CHANGE'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -118,6 +118,13 @@ export function emitRTC (message, sender) {
   }
 }
 
+export function codeChange(code) {
+  return {
+    type: CODE_CHANGE,
+    value: code
+  }
+}
+
 function error (message) {
   console.error(message)
 }
@@ -163,6 +170,9 @@ const ACTION_HANDLERS = {
   },
   [CONNECTION]: (state, action) => {
     return state.set('peers', state.get('peers').push(action.peerId))
+  },
+  [CODE_CHANGE]: (state, action) => {
+    return state.set('code', action.value)
   }
 }
 
@@ -174,6 +184,7 @@ const initialState = Immutable.Map({
     connectionId: '',
     connection: null,
     peers: Immutable.List(),
+    code: 'function draw() {\n  let r = new Note(60)\n  r.draw = () => rectangle(0,0,10,10)\n  r.onClick(this.play)\n  r.onNoteDown(() => r.color = red)\n}'
   })
 export default function reducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
