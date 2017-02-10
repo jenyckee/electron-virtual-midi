@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 
-export default class Home extends Component {
+export class Home extends Component {
 
   componentDidMount() {
     const { initRTC, openMidi } = this.props
