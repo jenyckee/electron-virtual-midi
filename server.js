@@ -7,10 +7,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import config from './webpack.config.development';
 
-// import virtualMidi from './virtual-midi';
-
 const app = express();
-// const midi = virtualMidi(app, 'virtual conductor');
 const compiler = webpack(config);
 const PORT = 8000;
 
@@ -21,10 +18,14 @@ const wdm = webpackDevMiddleware(compiler, {
   }
 });
 
-
 app.use(wdm);
+app.set('view engine', 'pug');
 
 app.use(webpackHotMiddleware(compiler));
+
+app.get('/:peerid', function (req, res) {
+  res.render('index', { title: req.params.peerid });
+});
 
 const server = app.listen(PORT, 'localhost', err => {
   if (err) {

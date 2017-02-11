@@ -25,7 +25,7 @@ export default class Home extends Component {
   }
 
   onConnect() {
-    shell.openExternal("http://localhost:3000/player/"+this.props.connectionId)
+    shell.openExternal("http://localhost:3000/#"+this.props.connectionId)
   }
   runCode() {
     console.log(this.props.code)
