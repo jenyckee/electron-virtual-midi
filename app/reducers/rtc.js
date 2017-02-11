@@ -2,6 +2,9 @@ import Peer from 'peerjs'
 import Immutable from 'immutable'
 import {midiMessage} from './midi'
 import electron from 'electron'
+import axios from 'axios'
+import {baseURL} from '../constants'
+const {shell} = require('electron')
 
 // ------------------------------------
 // Constants
@@ -125,6 +128,24 @@ export function codeChange(code) {
   }
 }
 
+export function createNewSketch(code, connectionId) {
+  return (dispatch, getState) => {
+    console.log(code)
+    return new Promise(resolve => {
+      axios.post('/sketch', {
+        code: code
+      }, {
+        baseURL: baseURL
+      }).then(res => {
+        var sketchId = res.data.insertedIds[0]
+        if (sketchId) {
+          shell.openExternal(`http://localhost:8000/sketch/${sketchId}/#`+connectionId)
+        }
+      })
+    })
+  }
+}
+
 function error (message) {
   console.error(message)
 }
@@ -184,8 +205,9 @@ const initialState = Immutable.Map({
     connectionId: '',
     connection: null,
     peers: Immutable.List(),
-    code: 'function draw() {\n  let r = new Note(60)\n  r.draw = () => rectangle(0,0,10,10)\n  r.onClick(this.play)\n  r.onNoteDown(() => r.color = red)\n}'
+    code: require('raw-loader!../../sketches/sketch1')
   })
+
 export default function reducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 

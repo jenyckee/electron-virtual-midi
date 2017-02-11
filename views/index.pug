@@ -1,5 +1,15 @@
 html
   head
-    title= title
+    title
+    style(type="text/css").
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
   body
-    script
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.22.1/ramda.min.js")
+    script(src="http://localhost:3004/ludo/dist/ludo.js")
+    script(src="http://localhost:3004/js/vendor/teoria.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/addons/p5.dom.js")
+    script!= sketch

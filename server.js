@@ -6,6 +6,10 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import config from './webpack.config.development';
+import { dbusername, dbpassword } from './dbconfig';
+import { MongoClient, ObjectID } from 'mongodb';
+
+const bodyParser= require('body-parser');
 
 const app = express();
 const compiler = webpack(config);
@@ -18,23 +22,44 @@ const wdm = webpackDevMiddleware(compiler, {
   }
 });
 
-app.use(wdm);
-app.set('view engine', 'pug');
+console.log(dbpassword, dbusername)
 
-app.use(webpackHotMiddleware(compiler));
+MongoClient.connect(`mongodb://${dbusername}:${dbpassword}@ds149329.mlab.com:49329/sketches`, (err, db) => {
+  if (err) return console.log(err)
 
-app.get('/:peerid', function (req, res) {
-  res.render('index', { title: req.params.peerid });
-});
+  app.use(wdm);
+  app.set('view engine', 'pug');
 
-const server = app.listen(PORT, 'localhost', err => {
-  if (err) {
-    console.error(err);
-    return;
-  }
+  app.use(webpackHotMiddleware(compiler));
+  app.use(bodyParser.urlencoded({extended: true}));
+  app.use(bodyParser.json());
 
-  console.log(`Listening at http://localhost:${PORT}`);
-});
+  app.get('/sketch/:id', function (req, res) {
+    console.log(req.params.id)
+    db.collection('sketches')
+    .findOne({"_id": ObjectID(req.params.id)}, function (err, result) {
+      res.render('index', { sketch: result.code });
+    })
+  });
+
+  app.post('/sketch', function (req, res) {
+    db.collection('sketches').insert(req.body, (err, result) => {
+      if (err) return console.log(err)
+
+      console.log(req.body)
+      res.send(result)
+    })
+  });
+
+  const server = app.listen(PORT, 'localhost', err => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    console.log(`Listening at http://localhost:${PORT}`);
+  });
+})
 
 process.on('SIGTERM', () => {
   console.log('Stopping dev server');

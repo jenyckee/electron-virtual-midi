@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styles from './Home.css';
-import { initRTC, codeChange } from '../reducers/rtc'
+import { initRTC, codeChange, createNewSketch } from '../reducers/rtc'
 import * as midi from '../reducers/midi'
 import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
-const {shell} = require('electron')
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -25,8 +24,9 @@ export default class Home extends Component {
   }
 
   onConnect() {
-    shell.openExternal("http://localhost:3000/#"+this.props.connectionId)
+    this.props.createNewSketch(this.props.code, this.props.connectionId)
   }
+
   runCode() {
     console.log(this.props.code)
   }
@@ -61,6 +61,7 @@ function mapDispatchToProps(dispatch) {
     initRTC: initRTC,
     openMidi: midi.open,
     codeChange: codeChange,
+    createNewSketch: createNewSketch
   }, dispatch);
 }
 
