@@ -39,7 +39,7 @@ app.on('ready', async () => {
   mainWindow = new BrowserWindow({
     show: false,
     width: 800,
-    height: 650
+    height: 680
   });
 
   let midiOut = new midi.output(),

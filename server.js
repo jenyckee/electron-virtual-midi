@@ -22,15 +22,14 @@ const wdm = webpackDevMiddleware(compiler, {
   }
 });
 
-console.log(dbpassword, dbusername)
+app.use(webpackHotMiddleware(compiler));
+app.use(wdm);
 
 MongoClient.connect(`mongodb://${dbusername}:${dbpassword}@ds149329.mlab.com:49329/sketches`, (err, db) => {
   if (err) return console.log(err)
 
-  app.use(wdm);
   app.set('view engine', 'pug');
 
-  app.use(webpackHotMiddleware(compiler));
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
 
@@ -50,16 +49,16 @@ MongoClient.connect(`mongodb://${dbusername}:${dbpassword}@ds149329.mlab.com:493
       res.send(result)
     })
   });
-
-  const server = app.listen(PORT, 'localhost', err => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-
-    console.log(`Listening at http://localhost:${PORT}`);
-  });
 })
+
+const server = app.listen(PORT, 'localhost', err => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  console.log(`Listening at http://localhost:${PORT}`);
+});
 
 process.on('SIGTERM', () => {
   console.log('Stopping dev server');

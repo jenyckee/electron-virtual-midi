@@ -9,3 +9,15 @@
 .container a {
   font-size: 1.4rem;
 }
+
+.run-button {
+  background: lightblue;
+  border: none;
+  color: white;
+  padding: 2em;
+  margin: 1em 0;
+  float: left;
+}
+.run-button:hover {
+  cursor: pointer;
+}

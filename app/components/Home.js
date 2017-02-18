@@ -38,11 +38,11 @@ export default class Home extends Component {
     return (
       <div>
         <div className={styles.container}>
-          <h3>I am {this.props.connectionId}: <a onClick={this.onConnect.bind(this)}>Connect!</a></h3>
+          <h3>{this.props.sketchname}</h3>
           <AceEditor mode="javascript" theme="tomorrow" onChange={this.onChange.bind(this)}
             name="editor" width="100%"
             value={this.props.code}/>
-            <button onClick={this.onConnect.bind(this)}>Run</button>
+            <button className={styles['run-button']} onClick={this.onConnect.bind(this)}>Run</button>
         </div>
       </div>
     );
@@ -52,7 +52,8 @@ export default class Home extends Component {
 function mapStateToProps(state) {
   return {
     connectionId: state.rtc.get('connectionId'),
-    code: state.rtc.get('code')
+    code: state.rtc.get('code'),
+    sketchname: 'p5.js sketch'
   };
 }
 
