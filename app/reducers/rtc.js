@@ -205,7 +205,7 @@ const initialState = Immutable.Map({
     connectionId: '',
     connection: null,
     peers: Immutable.List(),
-    code: require('raw-loader!../../sketches/sketch1')
+    code: require('raw-loader!../../sketches/sketch1.js.raw')
   })
 
 export default function reducer (state = initialState, action) {
