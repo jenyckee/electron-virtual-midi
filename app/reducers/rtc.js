@@ -3,8 +3,7 @@ import Immutable from 'immutable'
 import {midiMessage} from './midi'
 import electron from 'electron'
 import axios from 'axios'
-import {baseURL} from '../constants'
-const {shell} = require('electron')
+import { baseURL } from '../constants'
 
 // ------------------------------------
 // Constants
@@ -17,7 +16,8 @@ export const EMIT       = 'EMIT'
 export const INIT       = 'INIT'
 export const DATA       = 'DATA'
 export const ERROR      = 'ERROR'
-export const CODE_CHANGE = 'CODE_CHANGE'
+export const CLOSE = 'CLOSE'
+
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -51,6 +51,7 @@ export function connectionRTC (c) {
             serialization: 'json'
           })
       }
+      c.on('close', () => {console.log(c);dispatch(closeRTC(c.peer))})
       c.on('data', (data) => dispatch(dataRTC(data, c.peer)))
       dispatch({
         type: CONNECTION,
@@ -65,6 +66,13 @@ export function openRTC (id) {
   return {
     type: OPEN,
     connectionId: id
+  }
+}
+
+export function closeRTC(id) {
+  return {
+    type: CLOSE,
+    value: id
   }
 }
 
@@ -121,31 +129,6 @@ export function emitRTC (message, sender) {
   }
 }
 
-export function codeChange(code) {
-  return {
-    type: CODE_CHANGE,
-    value: code
-  }
-}
-
-export function createNewSketch(code, connectionId) {
-  return (dispatch, getState) => {
-    console.log(code)
-    return new Promise(resolve => {
-      axios.post('/sketch', {
-        code: code
-      }, {
-        baseURL: baseURL
-      }).then(res => {
-        var sketchId = res.data.insertedIds[0]
-        if (sketchId) {
-          shell.openExternal(`http://localhost:8000/sketch/${sketchId}/#`+connectionId)
-        }
-      })
-    })
-  }
-}
-
 function error (message) {
   console.error(message)
 }
@@ -154,7 +137,7 @@ export const actions = {
   connectRTC,
   openRTC,
   sendRTC,
-  emitRTC
+  emitRTC,
 }
 
 function eachActiveConnection (state, fn) {
@@ -192,8 +175,9 @@ const ACTION_HANDLERS = {
   [CONNECTION]: (state, action) => {
     return state.set('peers', state.get('peers').push(action.peerId))
   },
-  [CODE_CHANGE]: (state, action) => {
-    return state.set('code', action.value)
+  [CLOSE]: (state, action) => {
+    let i = state.get('peers').indexOf(action.value)
+    return state.set('peers', state.get('peers').delete(i))
   }
 }
 
@@ -205,7 +189,6 @@ const initialState = Immutable.Map({
     connectionId: '',
     connection: null,
     peers: Immutable.List(),
-    code: require('raw-loader!../../sketches/sketch1.js.raw')
   })
 
 export default function reducer (state = initialState, action) {

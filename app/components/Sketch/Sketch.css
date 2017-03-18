@@ -9,3 +9,8 @@
 .container a {
   font-size: 1.4rem;
 }
+
+.controls-container {
+  margin: 1rem 0;
+  position: absolute;
+}

@@ -41,14 +41,33 @@ MongoClient.connect(`mongodb://${dbusername}:${dbpassword}@ds149329.mlab.com:493
     })
   });
 
+  app.get('/sketch', function (req, res) {
+    db.collection('sketches')
+    .find({}).toArray(function (err, result) {
+      res.send(result);
+    })
+  });
+
   app.post('/sketch', function (req, res) {
     db.collection('sketches').insert(req.body, (err, result) => {
       if (err) return console.log(err)
-
-      console.log(req.body)
       res.send(result)
     })
   });
+
+  app.delete('/sketch/:id', function (req, res) {
+    db.collection('sketches').remove({_id: ObjectID(req.params.id)}, function (err, result) {
+      if (err) return console.log(err)
+      res.send(result);
+    })
+  });
+
+  app.put('/sketch/:id', function (req, res) {
+    db.collection('sketches').update({_id: ObjectID(req.params.id)}, req.body, (err, result) => {
+      if (err) return console.log(err)
+      res.send(result)
+    })
+  })
 })
 
 const server = app.listen(PORT, 'localhost', err => {

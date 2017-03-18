@@ -1,49 +1,94 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styles from './Home.css';
-import { initRTC, codeChange, createNewSketch } from '../reducers/rtc'
+import {actions as sketchActions} from '../reducers/sketch'
 import * as midi from '../reducers/midi'
-import AceEditor from 'react-ace';
-import 'brace/mode/javascript';
-import 'brace/theme/tomorrow';
+
+import R from 'ramda'
+import QRCode from 'qrcode.react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+const SketchListItem = (props) => {
+  return (
+    <li>
+      <Link onClick={props.open} to={"sketch/"+props.sketch._id}>{props.sketch.name}</Link>
+      <span onClick={props.delete}> x</span>
+    </li>
+  )
+}
 
-export default class Home extends Component {
+class Home extends Component {
 
-  componentDidMount() {
-    const { initRTC, openMidi } = this.props
-    initRTC('bnon5rifq5dygb9', 3)
-    openMidi()
+  constructor () {
+    super()
+    this.state = {
+      showQR: false,
+      sketchName: ""
+    }
   }
 
-  onChange(val) {
-    this.props.codeChange(val)
+  newSketch(e) {
+    e.preventDefault();
+    let sketchName = this.state.sketchName
+    let initCode = require('raw-loader!../../sketches/sketch1.js.raw')
+    if (this.state.sketchName) {
+      this.props.createSketch(initCode, this.state.sketchName)
+      this.setState(R.merge(this.state, {
+        showQR: !this.state.showQR,
+        sketchName: ""
+      }));
+    }
   }
 
-  onConnect() {
-    this.props.createNewSketch(this.props.code, this.props.connectionId)
+  changeSketchName(e) {
+    this.setState(R.merge(this.state, {
+      sketchName: e.target.value
+    }))
   }
 
-  runCode() {
-    console.log(this.props.code)
+  delete(id) {
+    this.props.deleteSketch(id)
+  }
+
+  open(id) {
+    this.props.setCurrentSketch(id)
   }
 
   render() {
     let CodemirrorOptions =  {
       lineNumbers: true
     }
+
     return (
       <div>
-        <div className={styles.container}>
-          <h3>{this.props.sketchname}</h3>
-          <AceEditor mode="javascript" theme="tomorrow" onChange={this.onChange.bind(this)}
-            name="editor" width="100%"
-            value={this.props.code}/>
-            <button className={styles['run-button']} onClick={this.onConnect.bind(this)}>Run</button>
+        <div>
+          <h1>Sketches</h1>
+          <ul>
+            {this.props.sketches.map(sketch => 
+              <SketchListItem 
+                key={sketch._id} 
+                sketch={sketch} 
+                delete={() => this.delete(sketch._id)}
+                open={() => this.open(sketch._id)}
+                />)}
+          </ul>
+          <form onSubmit={this.newSketch.bind(this)}>
+            <div className="form-row">
+              <span>SketchName: </span>
+              <input onChange={this.changeSketchName.bind(this)} value={this.state.sketchName} type="text"/>
+            </div>
+            <button type="submit" className="connect-button">New Sketch</button>
+          </form>
         </div>
+        <div>
+          <h1>Peers</h1>
+          <ul>
+            {this.props.peers.map(peer =><li key={peer}>{peer}</li>)}
+          </ul>
+        </div>
+        {/*{this.state.showQR ? <QRCode value="http://facebook.github.io/react/"/> : null}*/}
       </div>
     );
   }
@@ -51,18 +96,16 @@ export default class Home extends Component {
 
 function mapStateToProps(state) {
   return {
-    connectionId: state.rtc.get('connectionId'),
-    code: state.rtc.get('code'),
-    sketchname: 'p5.js sketch'
+    peers: state.rtc.get('peers')
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    initRTC: initRTC,
-    openMidi: midi.open,
-    codeChange: codeChange,
-    createNewSketch: createNewSketch
+    fetchSketches: sketchActions.fetchSketches,
+    createSketch: sketchActions.createSketch,
+    deleteSketch: sketchActions.deleteSketch,
+    setCurrentSketch: sketchActions.setCurrentSketch,
   }, dispatch);
 }
 

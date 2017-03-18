@@ -33,3 +33,24 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
+button {
+  background: lightblue;
+  border: none;
+  color: white;
+  padding: 2em;
+}
+button:hover {
+  cursor: pointer;
+}
+.control-container {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+.control-container button {
+  margin: 1rem;
+}
+.form-row {
+  margin: 1rem 0;
+}
