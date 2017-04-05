@@ -44,7 +44,6 @@ class Sketch extends Component {
             value={this.props.code}/>
           <div className={styles["controls-container"]}>
             <button onClick={this.onConnect.bind(this)}>Run</button>
-            <button onClick={this.refresh.bind(this)}>Refresh</button>
           </div>
         </div>
       </div>
