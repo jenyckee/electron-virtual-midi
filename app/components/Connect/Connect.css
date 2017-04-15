@@ -1,0 +1,11 @@
+.qr-connector {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  transition: 0.3s;
+}
+.qr-connector:hover {
+  transform: translate(-50%,-50%) scale(1.03);
+  cursor: pointer;
+}

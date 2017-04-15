@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styles from './Home.css';
 import {actions as sketchActions} from '../reducers/sketch'
+import {actions as rtcActions} from '../reducers/rtc'
 import * as midi from '../reducers/midi'
 
 import R from 'ramda'
@@ -10,13 +11,19 @@ import QRCode from 'qrcode.react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-const SketchListItem = (props) => {
-  return (
-    <li>
-      <Link onClick={props.open} to={"sketch/"+props.sketch._id}>{props.sketch.name}</Link>
-      <span onClick={props.delete}> x</span>
-    </li>
-  )
+class SketchListItem extends Component {
+  dragStart (event) {
+    event.dataTransfer.setData('text', JSON.stringify(this.props.sketch));
+  }
+
+  render() {
+    return (
+        <li className="sketchlistitem" draggable={true} onDragStart={this.dragStart.bind(this)}>
+          <Link onClick={this.props.open} to={"sketch/"+this.props.sketch._id}>{this.props.sketch.name}</Link>
+          <span onClick={this.props.delete}> x</span>
+        </li>
+      )
+  }
 }
 
 class Home extends Component {
@@ -56,11 +63,24 @@ class Home extends Component {
     this.props.setCurrentSketch(id)
   }
 
-  render() {
-    let CodemirrorOptions =  {
-      lineNumbers: true
-    }
+  preventDefault(event) {
+    event.preventDefault();
+  }
 
+  drop(event, peer) {
+    event.preventDefault();
+
+    var data;
+    try {
+      data = JSON.parse(event.dataTransfer.getData('text'));
+      this.props.sendRTC(data, peer)
+    } catch (e) {
+      // If the text data isn't parsable we'll just ignore it.
+      return;
+    }
+  }
+
+  render() {
     return (
       <div>
         <div>
@@ -85,10 +105,12 @@ class Home extends Component {
         <div>
           <h1>Peers</h1>
           <ul>
-            {this.props.peers.map(peer =><li key={peer}>{peer}</li>)}
+            {this.props.peers.map(peer =>
+            <li onDragOver={this.preventDefault} onDrop={(e) => this.drop(e,peer)} key={peer}>{peer}</li>
+            )}
           </ul>
         </div>
-        {/*{this.state.showQR ? <QRCode value="http://facebook.github.io/react/"/> : null}*/}
+        <Link to="connect">Connect</Link>
       </div>
     );
   }
@@ -96,7 +118,8 @@ class Home extends Component {
 
 function mapStateToProps(state) {
   return {
-    peers: state.rtc.get('peers')
+    peers: state.rtc.get('peers'),
+    connectionUrl: `http://${state.rtc.get("addresses")[0]}:3002#${state.rtc.get("connectionId")}`
   };
 }
 
@@ -106,6 +129,8 @@ function mapDispatchToProps(dispatch) {
     createSketch: sketchActions.createSketch,
     deleteSketch: sketchActions.deleteSketch,
     setCurrentSketch: sketchActions.setCurrentSketch,
+    openSession: sketchActions.openSession,
+    sendRTC: rtcActions.sendRTC,
   }, dispatch);
 }
 

@@ -1,8 +1,7 @@
 body {
   position: relative;
-  color: white;
   height: 100vh;
-  background-color: #232C39;
+  background-color: #7D82B0;
   font-family: Helvetica, Helvetica Neue;
   overflow-y: hidden;
 }
@@ -11,7 +10,6 @@ h2 {
   margin: 0;
   font-size: 1rem;
   font-weight: bold;
-  color: #fff;
 }
 
 p {
@@ -35,13 +33,19 @@ a:hover {
 }
 
 button {
-  background: lightblue;
+  background: #535993;
   border: none;
-  color: white;
   padding: 2em;
 }
 button:hover {
   cursor: pointer;
+}
+.sketchlistitem {
+  width: 4rem;
+  height: 4rem;
+  background-color: #aaa;
+  border-radius: 10px;
+  margin: 10px 0 10px 0;
 }
 .control-container {
   position: absolute;

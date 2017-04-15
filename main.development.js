@@ -1,10 +1,25 @@
 import { app, BrowserWindow, Menu, shell, ipcMain } from 'electron';
-import midi from 'midi'
+import midi from 'midi';
+import os from 'os';
+
+var interfaces = os.networkInterfaces();
+var addresses = [];
+for (var k in interfaces) {
+    for (var k2 in interfaces[k]) {
+        var address = interfaces[k][k2];
+        if (address.family === 'IPv4' && !address.internal) {
+            addresses.push(address.address);
+        }
+    }
+}
+
+global.sharedObj = { 
+  addresses: addresses
+}
 
 let menu;
 let template;
 let mainWindow = null;
-
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require

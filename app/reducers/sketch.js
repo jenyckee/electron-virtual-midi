@@ -23,8 +23,16 @@ function openSketch(sketch, connectionId) {
         baseURL: baseURL
       }).then(res => {
         console.log(sketch, res)
-        shell.openExternal(`http://localhost:8000/sketch/${sketch._id}/#`+connectionId)
+        shell.openExternal(`http://${getState().rtc.get('addresses')[0]}:8000/sketch/${sketch._id}/#`+connectionId)
       })
+    })
+  }
+}
+
+function openSession(url) {
+  return (dispatch, getState) => {
+    return new Promise(resolve => {
+      shell.openExternal(url)
     })
   }
 }
@@ -113,7 +121,8 @@ export const actions = {
   codeChange,
   createSketch,
   deleteSketch,
-  setCurrentSketch
+  setCurrentSketch,
+  openSession,
 }
 
 // ------------------------------------

@@ -113,7 +113,10 @@ export function sendRTC (message, id) {
   return (dispatch, getState) => {
     return new Promise((resolve) => {
       eachActiveConnection(getState().rtc, function(c) {
-        c.send(message)
+        if (c.peer == id) {
+          console.log(message)
+          c.send(message)
+        }
       })
     })
   }
@@ -184,11 +187,11 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-
 const initialState = Immutable.Map({
     connectionId: '',
     connection: null,
     peers: Immutable.List(),
+    addresses: electron.remote.getGlobal('sharedObj').addresses,
   })
 
 export default function reducer (state = initialState, action) {

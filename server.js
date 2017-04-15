@@ -34,11 +34,14 @@ MongoClient.connect(`mongodb://${dbusername}:${dbpassword}@ds149329.mlab.com:493
   app.use(bodyParser.json());
 
   app.get('/sketch/:id', function (req, res) {
-    console.log(req.params.id)
     db.collection('sketches')
     .findOne({"_id": ObjectID(req.params.id)}, function (err, result) {
       res.render('index', { sketch: result.code });
     })
+  });
+
+  app.get('/', function (req, res) {
+    res.render('index', { sketch: "" });
   });
 
   app.get('/sketch', function (req, res) {
@@ -70,7 +73,7 @@ MongoClient.connect(`mongodb://${dbusername}:${dbpassword}@ds149329.mlab.com:493
   })
 })
 
-const server = app.listen(PORT, 'localhost', err => {
+const server = app.listen(PORT, err => {
   if (err) {
     console.error(err);
     return;
