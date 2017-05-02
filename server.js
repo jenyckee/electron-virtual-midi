@@ -24,6 +24,7 @@ const wdm = webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler));
 app.use(wdm);
+app.use(express.static('public'));
 
 MongoClient.connect(`mongodb://${dbusername}:${dbpassword}@ds149329.mlab.com:49329/sketches`, (err, db) => {
   if (err) return console.log(err)

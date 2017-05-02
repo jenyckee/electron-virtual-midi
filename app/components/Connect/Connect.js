@@ -39,7 +39,7 @@ class Connect extends Component {
 function mapStateToProps(state) {
   return {
     peers: state.rtc.get('peers'),
-    connectionUrl: `http://${state.rtc.get("addresses")[0]}:3002#${state.rtc.get("connectionId")}`
+    connectionUrl: `http://${state.rtc.get("addresses")[0]}:8000#${state.rtc.get("connectionId")}`
   };
 }
 
