@@ -35,4 +35,6 @@ release
 main.js
 main.js.map
 
+public/ludo
+
 dbconfig.js
