@@ -84,7 +84,7 @@ class Home extends Component {
     return (
       <div>
         <div>
-          <h1>Sketches</h1>
+          <h1>Widgets</h1>
           <ul>
             {this.props.sketches.map(sketch => 
               <SketchListItem 
