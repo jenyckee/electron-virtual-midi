@@ -5,7 +5,8 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
-import './app.global.css';
+import './app.global.scss';
+import 'font-awesome/css/font-awesome.css';
 
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);

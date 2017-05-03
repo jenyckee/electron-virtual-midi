@@ -19,8 +19,15 @@ class SketchListItem extends Component {
   render() {
     return (
         <li className="sketchlistitem" draggable={true} onDragStart={this.dragStart.bind(this)}>
-          <Link onClick={this.props.open} to={"sketch/"+this.props.sketch._id}>{this.props.sketch.name}</Link>
-          <span onClick={this.props.delete}> x</span>
+          <div className="handle">
+            <i className="fa fa-bars"></i>
+          </div>
+          <div className="name">
+            <Link onClick={this.props.open} to={"sketch/"+this.props.sketch._id}>{this.props.sketch.name}</Link>
+          </div>
+          <div className="delete">
+            <span onClick={this.props.delete}> x</span>
+          </div>
         </li>
       )
   }
@@ -82,10 +89,10 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
+      <div className="sidebar">
         <div>
           <h1>Widgets</h1>
-          <ul>
+          <ul className="sketch-list">
             {this.props.sketches.map(sketch => 
               <SketchListItem 
                 key={sketch._id} 
@@ -96,21 +103,28 @@ class Home extends Component {
           </ul>
           <form onSubmit={this.newSketch.bind(this)}>
             <div className="form-row">
-              <span>SketchName: </span>
-              <input onChange={this.changeSketchName.bind(this)} value={this.state.sketchName} type="text"/>
+              <span> </span>
+              <input onChange={this.changeSketchName.bind(this)} 
+              placeholder="Enter a name ..."
+              value={this.state.sketchName} type="text"/>
             </div>
             <button type="submit" className="connect-button">New Sketch</button>
           </form>
         </div>
         <div>
           <h1>Peers</h1>
-          <ul>
+          <ul className="peerlist">
             {this.props.peers.map(peer =>
-            <li onDragOver={this.preventDefault} onDrop={(e) => this.drop(e,peer)} key={peer}>{peer}</li>
+            <li className="peerlist-item"
+            onDragOver={this.preventDefault} 
+            onDrop={(e) => this.drop(e,peer)} 
+            key={peer}></li>
             )}
           </ul>
         </div>
-        <Link to="connect">Connect</Link>
+        <div className="connectivity-button">
+          <Link to="connect"><i className="fa fa-qrcode fa-3x" aria-hidden="true"></i></Link>
+        </div>
       </div>
     );
   }
@@ -119,6 +133,7 @@ class Home extends Component {
 function mapStateToProps(state) {
   return {
     peers: state.rtc.get('peers'),
+    connectionId: state.rtc.get("connectionId"),
     connectionUrl: `http://${state.rtc.get("addresses")[0]}:8000#${state.rtc.get("connectionId")}`
   };
 }

@@ -51,7 +51,7 @@ export function connectionRTC (c) {
             serialization: 'json'
           })
       }
-      c.on('close', () => {console.log(c);dispatch(closeRTC(c.peer))})
+      c.on('close', () => {dispatch(closeRTC(c.peer))})
       c.on('data', (data) => dispatch(dataRTC(data, c.peer)))
       dispatch({
         type: CONNECTION,
