@@ -12,7 +12,13 @@ export default {
       loader: 'json-loader'
     }, {
       test: /\.scss/,
-      loader: 'sass-loader'
+      loader: 'style!css!sass'
+    }, { 
+      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+      loader: "url-loader" 
+    }, { 
+      test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      loader: "url-loader"
     }
     ]
   },

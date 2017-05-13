@@ -10,16 +10,29 @@ class HomePage extends Component {
     this.props.fetchSketches();
   }
 
+
   render() {
     return (
-      <Home sketches={this.props.sketches} />
+      <div className="home-container">
+        <Home sketches={this.props.sketches} />
+        <div className="preview">
+          <h1>Preview</h1>
+          {this.props.connectionId ? 
+          <div className="frame-container">
+            <iframe width="100%" height="100%" 
+            src={`http://localhost:8000/#${this.props.connectionId}`}></iframe>
+          </div>
+          : null }
+        </div>
+      </div>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    sketches: state.sketch.sketches
+    sketches: state.sketch.sketches,
+    connectionId: state.rtc.get('connectionId')
   };
 }
 
