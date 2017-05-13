@@ -30,7 +30,9 @@ class Connect extends Component {
           onClick={() => this.props.openSession(this.props.connectionUrl)}>
           <QRCode value={this.props.connectionUrl} size={250} level="H" />
         </div>
-        <Link to="/">Back</Link>
+        <div className="connectivity-button">
+          <Link to="/"><i className="fa fa-arrow-left fa-4"></i> BACK</Link>
+        </div>
       </div>
     );
   }

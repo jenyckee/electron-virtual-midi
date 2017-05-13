@@ -10,23 +10,6 @@ class HomePage extends Component {
     this.props.fetchSketches();
   }
 
-  drop(event) {
-    console.log(event)
-    event.preventDefault();
-    console.log(event.clientX);
-    console.log(event.clientY);
-    var data;
-    try {
-      data = JSON.parse(event.dataTransfer.getData('text'));
-      console.log(data)
-    } catch (e) {
-      return;
-    }
-  }
-
-  preventDefault(event) {
-    event.preventDefault();
-  }
 
   render() {
     return (
@@ -38,9 +21,6 @@ class HomePage extends Component {
           <div className="frame-container">
             <iframe width="100%" height="100%" 
             src={`http://localhost:8000/#${this.props.connectionId}`}></iframe>
-            <div onDragOver={this.preventDefault} 
-                onDrop={this.drop}
-                className="preview-overlay"></div>
           </div>
           : null }
         </div>

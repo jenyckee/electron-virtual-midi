@@ -26,7 +26,7 @@ class SketchListItem extends Component {
             <Link onClick={this.props.open} to={"sketch/"+this.props.sketch._id}>{this.props.sketch.name}</Link>
           </div>
           <div className="delete">
-            <span onClick={this.props.delete}> x</span>
+            <span onClick={this.props.delete}><i className="fa fa-trash-o"></i></span>
           </div>
         </li>
       )
@@ -103,7 +103,6 @@ class Home extends Component {
           </ul>
           <form onSubmit={this.newSketch.bind(this)}>
             <div className="form-row">
-              <span> </span>
               <input onChange={this.changeSketchName.bind(this)} 
               placeholder="Enter a name ..."
               value={this.state.sketchName} type="text"/>

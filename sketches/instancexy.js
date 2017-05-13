@@ -1,5 +1,5 @@
 new p5(function(sketch) {
-  var state = _state;
+  var state = midi;
   var r = 100;
   sketch.touchStarted = function(){
     Ludo.midi(state, [176, 6, 127]);
