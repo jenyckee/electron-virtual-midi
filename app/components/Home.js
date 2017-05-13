@@ -54,7 +54,6 @@ class Home extends Component {
       sketchName: e.target.value
     }))
   }
-
   delete(id) {
     this.props.deleteSketch(id)
   }

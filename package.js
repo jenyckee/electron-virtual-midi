@@ -11,6 +11,7 @@ const del = require('del');
 const exec = require('child_process').exec;
 const argv = require('minimist')(process.argv.slice(2));
 const pkg = require('./package.json');
+import rebuild from 'electron-rebuild';
 
 const deps = Object.keys(pkg.dependencies);
 const devDeps = Object.keys(pkg.devDependencies);
@@ -29,10 +30,10 @@ const DEFAULT_OPTS = {
     '^/release($|/)',
     '^/main.development.js'
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
-  .concat(
+    .concat(
     deps.filter(name => !electronCfg.externals.includes(name))
       .map(name => `/node_modules/${name}($|/)`)
-  )
+    )
 };
 
 const icon = argv.icon || argv.i || 'app/app';
@@ -73,6 +74,7 @@ function startPack() {
   console.log('start pack...');
   build(electronCfg)
     .then(() => build(cfg))
+    .then(() => rebuild(__dirname, "1.4.13"))
     .then(() => del('release'))
     .then(paths => {
       if (shouldBuildAll) {

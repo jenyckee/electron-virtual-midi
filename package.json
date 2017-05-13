@@ -104,6 +104,7 @@
     "css-modules-require-hook": "^4.0.1",
     "electron-debug": "^1.0.1",
     "font-awesome": "^4.6.3",
+    "immutable": "^3.8.1",
     "midi": "^0.9.5",
     "mongodb": "^2.2.22",
     "peerjs": "^0.3.14",
