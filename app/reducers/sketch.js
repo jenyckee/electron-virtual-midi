@@ -29,6 +29,18 @@ function openSketch(sketch, connectionId) {
   }
 }
 
+function saveSketch(sketch, connectionId) {
+  return (dispatch, getState) => {
+    return new Promise(resolve => {
+      axios.put(`/sketch/${sketch._id}`, R.dissoc('_id', sketch), {
+        baseURL: baseURL
+      }).then(res => {
+        console.log(sketch, res)
+      })
+    })
+  }
+}
+
 function openSession(url) {
   return (dispatch, getState) => {
     return new Promise(resolve => {
@@ -123,6 +135,7 @@ export const actions = {
   deleteSketch,
   setCurrentSketch,
   openSession,
+  saveSketch
 }
 
 // ------------------------------------

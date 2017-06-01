@@ -116,7 +116,7 @@ class Home extends Component {
             <li className="peerlist-item"
             onDragOver={this.preventDefault} 
             onDrop={(e) => this.drop(e,peer)} 
-            key={peer}></li>
+            key={peer}>{peer}</li>
             )}
           </ul>
         </div>

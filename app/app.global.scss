@@ -111,6 +111,9 @@ button:hover {
   margin-bottom: 10px;
   @include span(4 of 12);
   margin-right: gutter();
+  word-wrap: break-word;
+  padding: 5px;
+  color: #efefef;
 }
 .connectivity-button {
   position: absolute;

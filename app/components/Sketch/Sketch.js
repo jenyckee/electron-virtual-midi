@@ -26,6 +26,15 @@ class Sketch extends Component {
     this.props.openSketch(sketch, this.props.connectionId)
   }
 
+  onSave() {
+    let sketch = {
+      _id: this.props.sketchId,
+      code: this.props.code,
+      name: this.props.sketchName
+    }
+    this.props.saveSketch(sketch, this.props.connectionId)
+  }
+
   refresh() {
     
   }
@@ -44,6 +53,7 @@ class Sketch extends Component {
             value={this.props.code}/>
           <div className={styles["controls-container"]}>
             <button onClick={this.onConnect.bind(this)}>Run</button>
+            <button onClick={this.onSave.bind(this)}>Save</button>
           </div>
         </div>
       </div>
@@ -64,7 +74,8 @@ function mapDispatchToProps(dispatch) {
     initRTC: rtc.initRTC,
     codeChange: sketch.codeChange,
     openSketch: sketch.openSketch,
-    deleteSketch: sketch.deleteSketch
+    deleteSketch: sketch.deleteSketch,
+    saveSketch: sketch.saveSketch
   }, dispatch);
 }
 

@@ -6,15 +6,18 @@ html
         margin: 0;
         padding: 0;
       }
+      .identifier {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
   body
     script(src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.22.1/ramda.min.js")
-    script(src="/ludo/dist/ludo.js")
     script(src="/vendor/teoria.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/addons/p5.dom.js")
     script(src="/vendor/p5.collide2d.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.js")
-    script.
-      midi = Ludo.initialize();
+    script(src="/ludo/dist/ludo.js")
     script!= sketch
   #container
